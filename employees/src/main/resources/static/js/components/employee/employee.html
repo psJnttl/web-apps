@@ -1,0 +1,204 @@
+﻿<div class="container" style="padding-top: 50px">
+    <h4>Työntekijät</h4>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPersonnel"><span class="glyphicon glyphicon-plus"> Uusi työntekijä</button>
+    <input type='text' ng-model="nameSearch" class='form-control' placeholder='Enter search' value='' id='searchInput'>
+    <div class="table-responsive">
+        <table class='table' id='personnelTable'>
+            <tr>
+            <th ng-click="reverse('id'); sortVar = 'id'" title="lajittele id:n mukaan">Id</th> 
+            <th ng-click="reverse('firstName'); sortVar = 'firstName'" title="lajittele etunimen mukaan">Etunimi</th> 
+            <th ng-click="reverse('familyName'); sortVar = 'familyName'" title="lajittele sukunimen mukaan">Sukunimi</th> 
+            <th ng-click="reverse('city'); sortVar = 'city'" title="lajittele kaupungin mukaan">Kaupunki</th> 
+            <th ng-click="reverse('title'); sortVar = 'title'" title="lajittele tittelin mukaan">Titteli</th> 
+            <th ng-click="reverse('employer'); sortVar = 'employer'" title="lajittele työnantajan mukaan">Työnantaja</th> 
+            <th ng-click="reverse('salary'); sortVar = 'salary'" title="lajittele palkan mukaan">Palkka</th> 
+            <th style="cursor: text">Toiminnot</th> </tr>
+            <tr ng-repeat="employee in employees | filter: nameSearch | orderBy:sortVar:sortOrder" ng-click="setEmpContext(employee)">
+                <td>{{employee.id}}</td>
+                <td>{{employee.firstName}}</td>
+                <td>{{employee.familyName}}</td>
+                <td>{{employee.city}}</td>
+                <td>{{employee.title}}</td>
+                <td>{{employee.employer}}</td>
+                <td>{{employee.salary}}</td>
+                <td>
+                    <button type="button" ng-click="employeeTBDeleted(employee)" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDelete"><span class="glyphicon glyphicon-trash"> Poista</span></button> 
+                    <button type="button" ng-click="fetchEmployee(employee.id)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editPerson"><span class="glyphicon glyphicon-pencil"> Muokkaa</span></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<!--  modals -->
+<div id="addPersonnel" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Lisää työntekijä</h4>
+            </div>
+            <div class="modal-body">
+                <form id='addPersonnelForm'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_1stnam">Etunimi:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_1stnam" class="form-control" id="pnnl_1stnam" value="" ng-model="newEmp.firstName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_famnam">Sukunimi:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_famnam" class="form-control" id="pnnl_famnam" value="" ng-model="newEmp.familyName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_dob">Titteli:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_tit" class="form-control" id="pnnl_tit" value="" ng-model="newEmp.title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_salary">Palkka:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_salary" class="form-control" id="pnnl_salary" value="" ng-model="newEmp.salary">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_email">Työnantaja</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_emplr" class="form-control" id="pnnl_emplr" value="" ng-model="newEmp.employer">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_city">Kaupunki</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_city" class="form-control" id="pnnl_city" value="" ng-model="newEmp.city">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addEmployee()"><span class="glyphicon glyphicon-ok"> Tallenna</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"> Sulje</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--####################################################################################################-->
+    <div id="newEmp" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Uusi työntekijä</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <td>Etunimi:</td>
+                            <td><input ng-model="newEmp.firstName"></td>
+                        </tr>
+                        <tr>
+                            <td>Sukunimi:</td>
+                            <td><input ng-model="newEmp.familyName"></td>
+                        </tr>
+                        <tr>
+                            <td>Titteli:</td>
+                            <td><input ng-model="newEmp.title"></td>
+                        </tr>
+                        <tr>
+                            <td>Palkka:</td>
+                            <td><input ng-model="newEmp.salary"></td>
+                        </tr>
+                        <tr>
+                            <td>Työnantaja:</td>
+                            <td><input ng-model="newEmp.employer"></td>
+                        </tr>
+                        <tr>
+                            <td>Kaupunki:</td>
+                            <td><input ng-model="newEmp.city"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="createNew()">Tallenna</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="confirmDelete" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Haluatko varmasti poistaa työntekijän {{empToDelete.firstName}} {{empToDelete.familyName}}?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteEmployee()"><span class="glyphicon glyphicon-trash"> Vahvista</span></button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Peruuta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- ************************************************************************************************ -->
+<div id="editPerson" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Muokkaa työntekijän tietoja</h4>
+            </div>
+            <div class="modal-body">
+                <form id='addPersonnelForm'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_1stnam">Etunimi:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_1stnam" class="form-control" id="pnnl_1stnam" value="" ng-model="showEmployee.firstName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_famnam">Sukunimi:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_famnam" class="form-control" id="pnnl_famnam" value="" ng-model="showEmployee.familyName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_dob">Titteli:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_dob" class="form-control" id="pnnl_dob" value="" ng-model="showEmployee.title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_salary">Palkka:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_salary" class="form-control" id="pnnl_salary" value="" ng-model="showEmployee.salary">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_email">Työnantaja:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_email" class="form-control" id="pnnl_email" value="" ng-model="showEmployee.employer">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pnnl_phone">Kaupunki:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="pnnl_phone" class="form-control" id="pnnl_phone" value="" ng-model="showEmployee.city">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateEmployee()"><span class="glyphicon glyphicon-ok"> Tallenna</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"> Sulje</button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
