@@ -1,0 +1,34 @@
+<div class="container" style="padding-top: 50px">
+    <h4>Työntekijöiden määrä yrityksissä</h4>
+    <input type='text' ng-model="search1" class='form-control' placeholder='syötä haku' value='' id='searchInput'>
+    <div class="table-responsive">
+        <table class='table' id='employeesInCompaniesTable'>
+            <tr>
+                <th ng-click="reverse('id'); sortVar = 'id'" title="lajittele id:n mukaan">Id</th>
+                <th ng-click="reverse('name'); sortVar = 'name'" title="lajittele nimen mukaan">nimi</th>
+                <th ng-click="reverse('yCode'); sortVar = 'yCode'" title="lajittele Y-tunnuksen mukaan">Y-tunnus</th>
+                <th ng-click="reverse('employees'); sortVar = 'employees'" title="lajittele työntekijöiden määrän mukaan">työntekijöiden määrä</th>
+            </tr>
+            <tr ng-repeat="employer in employersEmployees | filter: search1 | orderBy:sortVar:sortOrder" >
+                <td>{{employer.id}}</td>
+                <td>{{employer.name}}</td>
+                <td>{{employer.yCode}}</td>
+                <td>{{employer.employees}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <h4>Keskipalkat yrityksissä</h4>
+    <input type='text' ng-model="search2" class='form-control' placeholder='syötä haku' value='' id='searchInput'>
+    <div class="table-responsive">
+        <table class='table' id='searchEmployeesPerEmployerTable'>
+            <th ng-click="reverse('employer'); sortVar = 'employer'" title="lajittele nimen mukaan">työnantaja</th>
+            <th ng-click="reverse('averageSalary'); sortVar = 'averageSalary'" title="lajittele keskipalkan mukaan">keskipalkka</th>
+            <tr ng-repeat="avgSalary in averageSalaries | filter: search2 | orderBy:sortVar:sortOrder" >
+                <td>{{avgSalary.employer}}</td>
+                <td>{{avgSalary.averageSalary}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
