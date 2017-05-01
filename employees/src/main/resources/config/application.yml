@@ -1,0 +1,49 @@
+##########################################################################
+# DEFAULT/DEVELOPMENT PROPERTIES:
+#
+# See http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# and docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
+#
+
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:15432/devritari
+    username: coder1
+    password: password
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+flyway:
+    enabled: true
+    baselineOnMigrate: false
+    baselineVersion: 1
+    locations: filesystem:C:\Users\you\projects\employees\src\main\resources\db\migration
+logging:
+  level:
+    fi.solita.: DEBUG
+
+##########################################################################
+# PRODUCTION PROPERTIES:
+#
+# Used when starting the application with command
+# java -jar whatever-<version>.jar --spring.profiles.active=production
+#
+
+digester:
+  environment: Production
+
+spring:
+  profiles: production
+  datasource:
+    url:
+    username:
+    password:
+
+server:
+  port: 8181
+
+    
