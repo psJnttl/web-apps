@@ -1,0 +1,27 @@
+<!-- Place all UI elements intended to be present across all routes in this file -->
+<div class="app" ng-controller="naviCtrl">
+	<nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Employees</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li ng-class="{active: getActiveSection(1)}">
+                    <a ui-sref="employee">Työntekijät</a>
+                </li>
+                <li ng-class="{active: getActiveSection(2)}">
+                    <a ui-sref="employer">Työnantajat</a>
+                </li>
+                <li ng-class="{active: getActiveSection(3)}">
+                    <a ui-sref="search">Hakutoiminnot</a>
+                </li>
+            </ul>
+        </div>
+	</nav>
+	<div ui-view></div>
+</div>
