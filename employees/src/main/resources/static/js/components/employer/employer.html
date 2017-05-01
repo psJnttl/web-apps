@@ -1,0 +1,104 @@
+<div class="container" style="padding-top: 50px">
+    <h4>Työnantajat</h4>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addEmployer"><span class="glyphicon glyphicon-plus"> Uusi työnantaja</button>
+    <input type='text' ng-model="nameSearch" class='form-control' placeholder='Enter search' value='' id='searchInput'>
+    <div class="table-responsive">
+        <table class='table' id='employerTable'>
+            <tr>
+            <th ng-click="sortByColumn('id')" title="lajittele id:n mukaan">Id</th>
+            <th ng-click="sortByColumn('name')" title="lajittele nimen mukaan">Nimi</th>  
+            <th ng-click="sortByColumn('yCode')" title="lajittele Y-tunnuksen mukaan">Y-tunnus</th> 
+            <th style="cursor: text">Toiminnot</th></tr>
+            <tr ng-repeat="employer in employers | filter: nameSearch | columnSorter:sortVar:sortOrder"  >
+                <td>{{employer.id}}</td>
+                <td>{{employer.name}}</td>
+                <td>{{employer.yCode}}</td>
+                <td>
+                    <button type="button" ng-click="employerTBDeleted(employer)" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDelete"><span class="glyphicon glyphicon-trash"> Poista</span></button> 
+                    <button type="button" ng-click="fetchEmployer(employer.id)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editEmployer"><span class="glyphicon glyphicon-pencil"> Muokkaa</span></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!--  modals -->
+
+<div id="addEmployer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Lisää työnantaja</h4>
+            </div>
+            <div class="modal-body">
+                <form id='addPersonnelForm'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="emplr_name">Nimi:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="emplr_name" class="form-control" id="emplr_name" value="" ng-model="newEmplr.name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="emplr_yc">Y-tunnus:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="emplr_yc" class="form-control" id="emplr_yc" value="" ng-model="newEmplr.yCode">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addEmployer()"><span class="glyphicon glyphicon-ok"> Tallenna</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"> Sulje</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--####################################################################################################-->
+    <div id="confirmDelete" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Haluatko varmasti poistaa työnantajan {{emplrToDelete.name}}, {{emplrToDelete.yCode}}?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteEmployer()">Vahvista</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Peruuta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!--####################################################################################################-->
+<div id="editEmployer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Muokkaa työnantajan tietoja</h4>
+            </div>
+            <div class="modal-body">
+                <form id='editEmployerForm'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="emplr_name">Nimi:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="emplr_name" class="form-control" id="emplr_name" value="" ng-model="showEmployer.name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="emplr_yc">Y-tunnus:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="emplr_yc" class="form-control" id="emplr_yc" value="" ng-model="showEmployer.yCode">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateEmployer()"><span class="glyphicon glyphicon-ok"> Tallenna</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"> Sulje</button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
